@@ -22,6 +22,7 @@ router.get('/auth',auth.verifyAuth,  async function (req, res, next) {
         res.status(500).send(err);
     }
 });
+
 // Register
 router.post('', async function (req, res, next) {
     try {
@@ -36,6 +37,7 @@ router.post('', async function (req, res, next) {
         res.status(500).send(err);
     }
 });
+
 // Logout
 router.delete('/auth', auth.verifyAuth, async function (req, res, next) {
     try {
@@ -50,6 +52,7 @@ router.delete('/auth', auth.verifyAuth, async function (req, res, next) {
         res.status(500).send(err);
     }
 });
+
 // Login
 router.post('/auth', async function (req, res, next) {
     try {

@@ -1,8 +1,9 @@
-
 async function refresh() {
     if (GameInfo.game.player.state == "Waiting") { 
         // Every time we are waiting
-        await  getGameInfo();       
+        await getGameInfo();
+        await getDecksInfo();
+        await getTowersInfo();        
         if (GameInfo.game.player.state != "Waiting") {
             // The moment we pass from waiting to play
             GameInfo.prepareUI();
@@ -13,9 +14,33 @@ async function refresh() {
 }
 
 function preload() {
+    GameInfo.images.cards       = [];
 
+    GameInfo.images.cards[0]    = loadImage('/assets/card.png');
+
+    GameInfo.images.cards[1]    = loadImage('/assets/demo_ball.png');
+    GameInfo.images.cards[2]    = loadImage('/assets/demo_tnt.png');
+    GameInfo.images.cards[3]    = loadImage('/assets/demo_nuke.png');
+
+    GameInfo.images.cards[4]    = loadImage('/assets/con_bob.png');
+    GameInfo.images.cards[5]    = loadImage('/assets/con_plan.png');
+    GameInfo.images.cards[6]    = loadImage('/assets/con_crane.png');
+
+    GameInfo.images.cards[7]    = loadImage('/assets/util_protect.png');
+    GameInfo.images.cards[8]    = loadImage('/assets/util_block_demo.png');
+    GameInfo.images.cards[9]    = loadImage('/assets/util_block_con.png');
+
+
+    GameInfo.images.tools       = [];
+
+    GameInfo.images.tools[1]    = loadImage('/assets/tool_1.png');
+    GameInfo.images.tools[2]    = loadImage('/assets/tool_2.png');
+    GameInfo.images.tools[3]    = loadImage('/assets/tool_3.png');
+
+
+    GameInfo.images.backGround  = loadImage('/assets/background.png')
+    GameInfo.images.tower       = loadImage('/assets/segment.png');
 }
-
 
 async function setup() {
     let canvas = createCanvas(GameInfo.width, GameInfo.height);
@@ -32,15 +57,16 @@ async function setup() {
     GameInfo.endturnButton.mousePressed(endturnAction);
     GameInfo.endturnButton.addClass('game')
 
+    await getDecksInfo();
+    await getTowersInfo();
 
     GameInfo.prepareUI();
     
-
     GameInfo.loading = false;
 }
 
 function draw() {
-    background(220);
+    background(GameInfo.images.backGround);
     if (GameInfo.loading) {
         textAlign(CENTER, CENTER);
         textSize(40);
@@ -49,11 +75,16 @@ function draw() {
     } else if (GameInfo.game.state == "Finished" && GameInfo.scoreWindow) {
         GameInfo.scoreWindow.draw();
     } else  {
+        GameInfo.playerTower.draw();
+        GameInfo.oppTower.draw();
         GameInfo.scoreBoard.draw();
+        GameInfo.playerDeck.draw();
+        GameInfo.oppDeck.draw();
     }
 }
 
 async function mouseClicked() {
-  
+    if (GameInfo.playerDeck) {
+        GameInfo.playerDeck.click()
+    }
 }
-

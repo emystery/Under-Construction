@@ -46,7 +46,6 @@ async function requestLogin(user, pass) {
     }
 }
 
-
 async function requestLogout() {
     try {
         const response = await fetch(`/api/users/auth`, 
@@ -66,7 +65,6 @@ async function requestLogout() {
         return {err: err};
     }
 }
-
 
 async function requestProfile() {
     try {

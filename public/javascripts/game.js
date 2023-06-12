@@ -1,5 +1,3 @@
-
-
 window.onload = async function() {
     try {
         let result = await checkGame(true);
@@ -8,4 +6,3 @@ window.onload = async function() {
         console.log(err);
     }
 }
-

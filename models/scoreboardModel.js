@@ -1,35 +1,40 @@
-const pool = require("../config/database");
+const pool  = require("../config/database");
 const State = require("./statesModel");
 
 // Auxiliary class of the ScoreBoardLine
 class PlayerScore {
-    constructor (id,playerId,name,state,points) {
-        this.id = id;
-        this.playerId = playerId;
-        this.name = name;
-        this.state = state;
-        this.points = points;
+    constructor (id, playerId, name, state, points) {
+        this.id         = id;
+        this.playerId   = playerId;
+        this.name       = name;
+        this.state      = state;
+        this.points     = points;
     }
     export() {
-        let score = new PlayerScore();
-        score.id = this.id;
-        score.name = this.name;
-        score.state = this.state.name;
-        score.points = this.points; 
+        let score       = new PlayerScore();
+        score.id        = this.id;
+        score.name      = this.name;
+        score.state     = this.state.name;
+        score.points    = this.points; 
         return score;
     }
 
     // Since this an auxiliary class we consider all verifications are done
     static async getPlayerScore(playerId) {
         try {
-            let [dbPlayerScores] = await pool.query(`Select * from user 
-            inner join user_game on ug_user_id = usr_id
-            inner join scoreboard on sb_user_game_id = ug_id
-            inner join scoreboard_state on sb_state_id = sbs_id
-            where ug_id=?`, [playerId]);
-            let dbPS = dbPlayerScores[0];
-            let pScore = new PlayerScore(dbPS.usr_id,dbPS.ug_id,dbPS.usr_name,
-                            new State(dbPS.sbs_id,dbPS.sbs_state),dbPS.sb_points );
+            let [dbPlayerScores] = await pool.query(
+                `Select * from user 
+                inner join user_game on ug_user_id = usr_id
+                inner join scoreboard on sb_user_game_id = ug_id
+                inner join scoreboard_state on sb_state_id = sbs_id
+                where ug_id=?`, [playerId]);
+            let dbPS    = dbPlayerScores[0];
+            let pScore  = new PlayerScore(
+                                          dbPS.usr_id,
+                                          dbPS.ug_id,
+                                          dbPS.usr_name,
+                                          new State(dbPS.sbs_id, dbPS.sbs_state),
+                                          dbPS.sb_points);
             return {status:200, result: pScore};
         } catch (err) {
             console.log(err);

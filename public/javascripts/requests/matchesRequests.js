@@ -26,9 +26,6 @@ async function requestWaitingMatches() {
     }
 }
 
-
-
-
 async function requestJoinMatch(mId) {
     try {
         const response = await fetch(`/api/games/${mId}/join`, 
@@ -65,7 +62,6 @@ async function requestCreateMatch() {
     }
 }
 
-
 async function requestCancelMatch() {
     try {
         const response = await fetch(`/api/games/auth/cancel`, 
@@ -84,7 +80,6 @@ async function requestCancelMatch() {
     }
 }
 
-
 async function requestScores() {
     try {
         const response = await fetch(`/api/scores/`);
@@ -97,7 +92,6 @@ async function requestScores() {
         return {err: err};
     }
 }
-
 
 async function requestScore() {
     try {
@@ -112,4 +106,3 @@ async function requestScore() {
         return {err: err};
     }
 }
-
