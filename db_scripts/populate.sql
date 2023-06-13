@@ -35,11 +35,16 @@ insert into tower_state (tst_name) values ("Ready");
 insert into tower_state (tst_name) values ("Acted");
 insert into tower_state (tst_name) values ("Protected");
 
+
 insert into card (crd_cost, crd_name, crd_effect, crd_type_id) values
-   (1, "Wreck It!", "Demolishes 1 Level", 2),
-   (2, "Boom!", "Demolishes 2 levels", 2),
-   (3, "War, War Never Changes", "Demolishes half of the tower", 2),
-   (1, "Bob The Builder", "Builds 1 level", 1),
-   (2, "Planning", "Builds 2 levels", 1),
-   (3, "Heavy Machinery", "Builds half of current levels", 1),
-   (2, "Use Protection!", "Prevents demolition for one turn", 3);
+   (1, "Ball!", "Wrecks 1 Level", 2),
+   (2, "Boom!", "Wrecks 2 levels", 2),
+   (3, "Adieu", "Wrecks 50% of the tower", 2),
+   
+   (1, "Bob", "Builds 1 level", 1),
+   (2, "Plans!", "Builds 2 levels", 1),
+   (3, "Crane!", "Builds 50% of current levels", 1),
+   
+   (2, "Hat!", "Safe for a turn", 3),
+   (3, "Yoink", "Opponent tools -1", 3),
+   (3, "Noink", "Player tools +1", 3);

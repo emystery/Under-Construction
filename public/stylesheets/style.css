@@ -1,7 +1,27 @@
 body {
-  padding: 0px;
-  margin: 0px;
+  background-image: url('/assets/home.png');
+  background-position: -400 -100;
+  padding: 16px;
+  margin: 16px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-weight:bold;
+}
+
+.orange-box {
+  background-color: rgb(255, 187, 0);
+  padding: 8px;
+  opacity: 1;
+  display: inline-block;
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
+.orange-box a {
+  color: black;
+}
+
+.button-container {
+  padding-top: 10px;
 }
 
 a {

@@ -1,4 +1,9 @@
+const PoolCluster = require("mysql2/typings/mysql/lib/PoolCluster");
+
+
+
 async function getGameInfo() {
+
     let result = await requestPlayerGame();
     if (!result.successful) {
         alert("Something is wrong with the game please login again!");
@@ -76,29 +81,60 @@ async function getTowersInfo() {
 }
 
 async function playCard(card) {
-    if (!card.active) {
-        alert("That card was already played");
-    } else if (confirm(`Do you want to play the "${card.name}" card?`)) {
+
+    demo        = new Audio('/assets/audio/Explosion.mp3');
+    con         = new Audio('/assets/audio/Jump.mp3');
+    util        = new Audio('/assets/audio/Powerup.mp3');
+    poor        = new Audio('assets/audio/Menu_Navigate_03.mp3');
+
+    if (card.active == false) {
+        poor.play();
+        //alert("That card was already played");
+    } else  {
+        if (game.player.money < card.cost) {
+            poor.play();
+        }
         let result = await requestPlayCard(card.deckId);
         if (result.successful) {
+
+            if (card.cardId == 1 || card.cardId == 2 || card.cardId == 3) {
+                demo.play();
+            }else if (card.cardId == 4 || card.cardId == 5 || card.cardId == 6){
+                con.play();
+            }else if (card.cardId == 7 || card.cardId == 8 || card.cardId == 9){
+                util.play();
+            }
+
             await getGameInfo();
             await getDecksInfo();
             await getTowersInfo();
+
+
         }
-        alert(result.msg);
+        //alert(result.msg);
         // if game ended we get the scores and prepare the ScoreWindow
         if (GameInfo.game.state == "Finished") {
             let result = await requestScore();
-            GameInfo.scoreWindow = new ScoreWindow(50,50,GameInfo.width-100,GameInfo.height-100,result.score,closeScore);
+            GameInfo.scoreWindow = new ScoreWindow(
+                50,
+                50,
+                GameInfo.width-100,
+                GameInfo.height-100,
+                result.score,
+                closeScore);
         }
     }
 }
 
 async function endturnAction() {
+
+    button      = new Audio('/assets/audio/Hit_02.mp3');
+
     let result = await requestEndTurn();
     if (result.successful) {
         await  getGameInfo();
         GameInfo.prepareUI();
+        button.play();
     } else alert("Something went wrong when ending the turn.")
 }
 

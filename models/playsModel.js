@@ -5,9 +5,9 @@ const Settings      = require("./gameSettings")
 
 // auxiliary function to check if the game ended 
 async function checkEndGame(game) {
-    if(game.player.tower.height >= Settings.maxHeight || game.opponents[0].tower.height >= Settings.maxHeight) 
+    if (game.player.tower.height >= Settings.maxHeight || game.opponents[0].tower.height >= Settings.maxHeight)
+    
         return true;
-    else 
         return false;
 
 }
@@ -129,11 +129,18 @@ class Play {
             // Set game to finished (id = 3)
             await pool.query(`Update game set gm_state_id=? where gm_id = ?`, [3, game.id]);
 
+            if (game.player.tower.height == 24) {
+                let sqlScore = `Insert into scoreboard (sb_user_game_id, sb_state_id, sb_points) values (?,?,?)`;
+                await pool.query(sqlScore, [game.player.id,3,game.player.tower.height]);
+                await pool.query(sqlScore, [game.opponents[0].id,2,game.opponents[0].tower.height]);
+            }else if (game.opponents[0].tower.height == 24) {
+                let sqlScore = `Insert into scoreboard (sb_user_game_id, sb_state_id, sb_points) values (?,?,?)`;
+                await pool.query(sqlScore, [game.player.id,2,game.player.tower.height]);
+                await pool.query(sqlScore, [game.opponents[0].id,3,game.opponents[0].tower.height]);
+            }
+
             // Insert score lines with the state and points.
             // For this template both are  tied (id = 1) and with one point 
-            let sqlScore = `Insert into scoreboard (sb_user_game_id, sb_state_id, sb_points) values (?,?,?)`;
-            await pool.query(sqlScore, [game.player.id,1,1]);
-            await pool.query(sqlScore, [game.opponents[0].id,1,1]);
 
             return { status: 200, result: { msg: "Game ended. Check scores." } };
         } catch (err) {

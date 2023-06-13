@@ -33,16 +33,24 @@ class ScoreWindow extends Window {
             text("Score",this.x,this.y,this.width,this.height/5);
             textSize(30);
             text("Name",this.x+this.width/5,this.y+this.height/5,this.width/5,this.height/5);
+
             text("State",this.x+2*this.width/5,this.y+this.height/5,this.width/5,this.height/5);
-            text("Points",this.x+3*this.width/5,this.y+this.height/5,this.width/5,this.height/5);
+
+            text("Height",this.x+3*this.width/5,this.y+this.height/5,this.width/5,this.height/5);
+
             
             text(this.player.name,this.x+this.width/5,this.y+2*this.height/5,this.width/5,this.height/5);
+
             text(this.player.state,this.x+2*this.width/5,this.y+2*this.height/5,this.width/5,this.height/5);
-            text(this.player.points,this.x+3*this.width/5,this.y+2*this.height/5,this.width/5,this.height/5);
+
+            text(game.player.tower.height,this.x+3*this.width/5,this.y+2*this.height/5,this.width/5,this.height/5);
            
+
             text(this.opp.name,this.x+this.width/5,this.y+3*this.height/5,this.width/5,this.height/5);
+
             text(this.opp.state,this.x+2*this.width/5,this.y+3*this.height/5,this.width/5,this.height/5);
-            text(this.opp.points,this.x+3*this.width/5,this.y+3*this.height/5,this.width/5,this.height/5);
+            
+            text(game.opponents[0].tower.height,this.x+3*this.width/5,this.y+3*this.height/5,this.width/5,this.height/5);
             
         }
     }

@@ -120,6 +120,8 @@ class MatchDecks {
             let card        = fromDBCardToCard(dbDeckCards[0]);
             let playerTower = game.player.tower;
             let oppTower    = game.opponents[0].tower; 
+            let player      = game.player;
+            let opponent    = game.opponents[0];
             
             // verifications
             // Check if we have enough money
@@ -127,19 +129,6 @@ class MatchDecks {
                 return {status:400, result:{msg:"Not enough money"}};
             }
 
-            
-
-            //specific rule verification
-            // No actions when tower is protected
-            if (playerTower.state.name == "Protected") {
-                return {status:400, result:{msg:"Cannot do any other actions while protected"}};
-            }
-
-            // Bye-Bye and Heavy Machinery can only be played if no other card was played
-            /*if ((card.cardId == 3 || card.cardId == 6) && playerTower.state.name != "Ready") {
-                return {status:400, result:{msg:"That card cannot be played when another card was already played"}};    
-            }*/
-            
             // verifications done, set card to inactive
             await pool.query("update user_game_card set ugc_active = 0 where ugc_id = ?", [deckId]);
 
@@ -147,19 +136,21 @@ class MatchDecks {
 
             // Set player state to Acted (since we already made all the state checks)
             playerTower.state.id = 2;
-
             // This line should not be necessary since we only use the id to update the DB
             playerTower.state.name = "Acted";
 
             switch (card.cardId) {
                 case 1: wreckIt(oppTower);              break;
                 case 2: boom(oppTower);                 break;
-                case 3: byeBye(oppTower);               break;
+                case 3: adieu(oppTower);                break;
                 case 4: bobBuilder(playerTower);        break;
                 case 5: planning(playerTower);          break;
-                case 6: heavyMachinery(playerTower);    break;
+                case 6: crane(playerTower);             break;
                 case 7: protection(playerTower);        break;
+                case 8: yoink(opponent);                break;
+                case 9: noink(player);                  break;
             }
+
             let towerSql = `update tower set twr_tower_state_id = ?, twr_height = ? where twr_id = ?`;
 
             // Updating player tower and opponent tower (same query, different values)
@@ -167,8 +158,10 @@ class MatchDecks {
             await pool.query(towerSql,[oppTower.state.id,       oppTower.height,        oppTower.id]);
 
 
-            let playerSql = `update user_game set ug_money = ? where ug_id = ?`;
-            await pool.query(playerSql,[game.player.money, game.player.id]);
+            let playerSql = `update user_game set ug_money = ?, ug_tool_level = ? where ug_id = ?`;
+            await pool.query(playerSql,[game.player.money, game.player.tools, game.player.id]);
+            let oppSql = `update user_game set ug_tool_level = ? where ug_id = ?`;
+            await pool.query(oppSql,[game.opponents[0].tools, game.opponents[0].id]);
 
 
             return {status:200, result: {msg: "Card played!"}};
@@ -195,7 +188,7 @@ function boom(oppTower) {
     }
 }
 
-function byeBye(oppTower) {
+function adieu(oppTower) {
     if (oppTower.state.name != "Protected") {
         oppTower.height = oppTower.height - Math.round(oppTower.height/2);
         if (oppTower.height <= 0) oppTower.height = 0;
@@ -212,7 +205,7 @@ function planning(playerTower) {
     if (playerTower.height > Settings.maxHeight) playerTower.height = Settings.maxHeight;
 }
 
-function heavyMachinery(playerTower) {
+function crane(playerTower) {
     playerTower.height = playerTower.height + Math.round(playerTower.height/2);
     if (playerTower.height > Settings.maxHeight) playerTower.height = Settings.maxHeight;
     else if (playerTower.height == 0) playerTower.height = Settings.halfHeight;
@@ -222,6 +215,14 @@ function protection(playerTower) {
     playerTower.state.id = 3;
     // we will only use the id to update the DB, so this line shouldn't be needed 
     playerTower.state.name = "Protected";
+}
+
+function yoink(opponent) {
+    if (opponent.tools > 1) opponent.tools --;
+}
+
+function noink(player) {
+    if (player.tools < 3) player.tools ++;
 }
 
 module.exports = MatchDecks;

@@ -93,7 +93,7 @@ alter table tower add constraint tower_fk_user_game
 			ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 alter table tower add constraint tower_fk_tower_state
-			foreign key (twr_user_game_id) references tower_state(tst_id)
+			foreign key (twr_tower_state_id) references tower_state(tst_id)
 			ON DELETE NO ACTION ON UPDATE NO ACTION;
             
 alter table user_game_card add constraint user_game_card_fk_user_game

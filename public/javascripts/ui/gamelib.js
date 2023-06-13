@@ -25,10 +25,10 @@ function preload() {
     GameInfo.images.cards[4]    = loadImage('/assets/con_bob.png');
     GameInfo.images.cards[5]    = loadImage('/assets/con_plan.png');
     GameInfo.images.cards[6]    = loadImage('/assets/con_crane.png');
-
     GameInfo.images.cards[7]    = loadImage('/assets/util_protect.png');
-    GameInfo.images.cards[8]    = loadImage('/assets/util_block_demo.png');
-    GameInfo.images.cards[9]    = loadImage('/assets/util_block_con.png');
+
+    GameInfo.images.cards[8]    = loadImage('/assets/util_tooldown.png');
+    GameInfo.images.cards[9]    = loadImage('/assets/util_toolup.png');
 
 
     GameInfo.images.tools       = [];
@@ -38,8 +38,14 @@ function preload() {
     GameInfo.images.tools[3]    = loadImage('/assets/tool_3.png');
 
 
-    GameInfo.images.backGround  = loadImage('/assets/background.png')
+    GameInfo.images.backGround  = loadImage('/assets/background.png');
     GameInfo.images.tower       = loadImage('/assets/segment.png');
+
+    GameInfo.images.home        = loadImage('/assets/home.png');
+
+    GameInfo.audio.demo         = new Audio('/assets/audio/Explosion.mp3');
+    GameInfo.audio.con          = new Audio('/assets/audio/Jump.mp3');
+    GameInfo.audio.util         = new Audio('/assets/audio/Powerup.mp3');
 }
 
 async function setup() {
