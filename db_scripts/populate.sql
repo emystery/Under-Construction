@@ -47,4 +47,4 @@ insert into card (crd_cost, crd_name, crd_effect, crd_type_id) values
    
    (2, "Hat!", "Safe for a turn", 3),
    (3, "Yoink", "Opponent tools -1", 3),
-   (3, "Noink", "Player tools +1", 3);
+   (2, "Noink", "Player tools +1", 3);
