@@ -1,6 +1,3 @@
-const PoolCluster = require("mysql2/typings/mysql/lib/PoolCluster");
-
-
 
 async function getGameInfo() {
 
